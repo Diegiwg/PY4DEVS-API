@@ -1,11 +1,8 @@
-# PY4DEVS API
-- TRABALHO EM PROGRESSO - V0.1.0 WIP
+<h1 align="center">PY4DEVS API</h1>
+<h4 align="center"> A free library for those who need to generate **Brazilian Documents** for testing. </h4>
 
-## Sobre
+## About
 
-- A biblioteca *py4devs* tem por objetivo fornecer um meio simples de utilizar as incriveis ferramentas desenvolvidas pela equipe 4DEVS.COM.BR diretamente nos scripts/projetos python.
+**API4DEVS** is a *free library* that makes it possible to generate **Brazilian Documents** to test verification functions in the most diverse applications.
 
-## Estado Atual
-
-- A biblioteca está em desenvolvimento há apenas um dia.
-- A maioria das ferramentas de geração de dados já possuem cobertura.
+---
