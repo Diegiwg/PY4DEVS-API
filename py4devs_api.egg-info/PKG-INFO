@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: py4devs-api
-Version: 0.2.1
+Version: 0.3.0
 Summary: API4DEVS is a free library that makes it possible to generate Brazilian Documents to test verification functions in the most diverse applications.
 Home-page: https://github.com/Diegiwg/PY4DEVS-API
 Author: Diego Queiroz [Diegiwg]
 Author-email: diegiwg@gmail.com
 License: MIT
-Download-URL: https://github.com/Diegiwg/PY4DEVS-API/archive/refs/tags/v0.2.1.tar.gz
+Download-URL: https://github.com/Diegiwg/PY4DEVS-API/archive/refs/tags/v0.3.0.tar.gz
 Description: <h1 align="center">PY4DEVS API</h1>
         <h4 align="center"> A free library for those who need to generate **Brazilian Documents** for testing. </h4>
         
