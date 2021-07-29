@@ -3,7 +3,7 @@
 
 ## About
 
-**API4DEVS** is a *free library* that makes it possible to generate **Brazilian Documents** to test verification functions in the most diverse applications.
+**PY4DEVS** is a *free library* that makes it possible to generate **Brazilian Documents** to test verification functions in the most diverse applications.
 
 ---
 
