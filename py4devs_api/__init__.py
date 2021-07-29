@@ -5,12 +5,25 @@ from unicodedata import normalize
 
 class Utils () :
     r"""Class containing auxiliary library functions
-    
     """
 
     API_URL = 'https://www.4devs.com.br'
     HEAD = CaseInsensitiveDict()
     HEAD["Content-Type"] = "application/x-www-form-urlencoded"
+
+    def IS_CREDIT_CARD_INSTITUTION (self, card_company: str) :
+        return {
+            'MC':lambda:'master', 'V16':lambda:'visa16', 'AE':lambda:'amex', 'DC':lambda:'diners', 'DI':lambda:'discover','ER':lambda:'enroute', 'JC':lambda:'jcb', 'VC':lambda:'voyager', 'HC':lambda:'hiper', 'AC':lambda:'aura'
+        }[card_company]()
+
+    def IS_BANKING_INSTITUTION (self, banking_institution: str) :
+        return {
+            'BB':lambda:'2',
+            'BD':lambda:'121',
+            'BC':lambda:'85',
+            'BI':lambda:'120',
+            'BS':lambda:'151'
+        }[banking_institution]()
 
     def FORMAT_THE_RETURN (self, formatting: bool) :
         return {True: lambda: 'S', False: lambda: 'N'}[formatting]()
@@ -51,26 +64,42 @@ class Utils () :
         return response.content.decode('utf-8')
 
 class Generator (Utils) :
-    r"""Development plans:
+    r"""Class where all generators are grouped for ease of use."""
 
-        :generator: Credit Card
+    def CREDIT_CARD (self, formatting: bool, card_company: str) :
+        r"""Generates credit card data
+            :return: dictionary containing the generated information.
 
-        :generator: Bank Account
+            :param formatting: determines whether the resulting text will have formatting.
+                :bool: True | False
 
-        :generator: Certificates
-            :state: finished
+            :param card_company: determines to which credit card institution the generated data belongs.
+                :str: MC = Mastercard | V16 = Visa 16 Digits | AE = American Express | DC = Diners Club | DI = Discover | ER = enRoute | JC = JBC Card | VC = Voyager Card | HC = HiperCard | AC = Aura Card
 
-        :generator: CNH | CNPJ | CPF | RG
-            :state: finished
+        """
+
+        return self.convert_html_to_dictionary(self.make_API_request('PROGRAM', 
+            {'acao':'gerar_cc',
+            'pontuacao': self.FORMAT_THE_RETURN(formatting),
+            'bandeira': self.IS_CREDIT_CARD_INSTITUTION(card_company)
+            }), '.output-subtitle', '.output-txt')
+
+    def BANK_ACCOUNT (self, brazilian_state: str, banking_institution: str) :
+        r"""Generates bank account data
+            :return: dictionary containing the generated information.
+                     
+            :param brazilian_state: Determines which Brazilian state the generated Bank Account belongs to.
+                :str: AC | AL | AM | AP | BA | CE | DF | ES | GO | MA | MG | MS | MT | PA | PB | PE | PI | PR | RJ | RN | RS | RO | RR | SC | SE | SP | TO
         
-        :generator: PIS/PASEP | RENAVAM
+            :param banking_institution: Determines which Brazilian banking institution the generated account belongs to.
+                :str: BB = Bank of Brazil | BD = Bradesco Bank | BC = Citibank | BI = Bank of Itaú | BS = Santander Bank
+        """
 
-        :generator: Voter Title
-            :state: finished
-        
-        :generator: State Registration
-            :state: finished
-    """
+        return self.convert_html_to_dictionary(self.make_API_request('PROGRAM', 
+            {'acao':'gerar_conta_bancaria',
+            'banco': self.IS_BANKING_INSTITUTION(banking_institution),
+            'cpf_estado': self.IS_BRAZILIAN_STATE(brazilian_state)
+            }), '.output-subtitle', '.output-txt')
 
     def CPF (self, formatting: bool, brazilian_state: str) :
         r"""Generates a CPF number
@@ -127,9 +156,6 @@ class Generator (Utils) :
     def CNH (self) :
         r"""Generates a CNH number
             :return: text containing the generated CNH, with or without formatting.
-
-            :param formatting: determines whether the resulting text will have formatting.
-                :bool: True | False
         """
 
         return self.make_API_request('PROGRAM',
@@ -162,7 +188,26 @@ class Generator (Utils) :
                 'N': lambda: 'nascimento', 'C': lambda: 'casamento', 'CR': lambda: 'casamento_religioso', 'O': lambda: 'obito'
             }[type]()
         })
-   
+
+    def RENAVAM (self) :
+        r"""Generates a RENAVAM number
+            :return: text containing the generated RENAVAM, with or without formatting.
+        """
+
+        return self.make_API_request('PROGRAM',
+            {'acao':'gerar_renavam'})
+
+    def PIS (self, formatting: bool) :
+        r"""Generates a PIS number
+            :return: text containing the generated PIS, with or without formatting.
+
+            :param formatting: determines whether the resulting text will have formatting.
+                :bool: True | False
+        """
+
+        return self.make_API_request('PROGRAM',
+        {'acao':'gerar_pis', 'pontuacao':self.FORMAT_THE_RETURN(formatting)})
+
 class Validator (Utils) :
     r"""Development plans:
 
@@ -174,7 +219,7 @@ class Validator (Utils) :
 
         :validator: CNH | CNPJ | CPF | RG
         
-        :validator: PIS/PASEP | RENAVAM
+        :validator: PIS | RENAVAM
 
         :validator: Voter Title
         
